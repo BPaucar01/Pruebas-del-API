@@ -1,0 +1,556 @@
+{
+	"info": {
+		"_postman_id": "9e722e5f-3e18-456f-9e75-6ae7d3da4499",
+		"name": "API IoTSmartLink-Orion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28472768"
+	},
+	"item": [
+		{
+			"name": "Medicion",
+			"item": [
+				{
+					"name": "medicion con idDispositivoIoT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Código de respuesta 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Validar medición\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0].idTipoMedicion).to.eql(3);\r",
+									"    pm.expect(jsonData[0].idDispositivoIoT).to.eql(1);\r",
+									"    pm.expect(jsonData[0].valorMedicion).to.eql(24.1);\r",
+									"    pm.expect(jsonData[0].estado).to.eql(\"Alerta\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idDispositivoIot\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/medicion",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"medicion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mediciones por fecha",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar medición\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0].idTipoMedicion).to.eql(3);\r",
+									"    pm.expect(jsonData[0].idDispositivoIoT).to.eql(1);\r",
+									"    pm.expect(jsonData[0].valorMedicion).to.eql(24.1);\r",
+									"    pm.expect(jsonData[0].estado).to.eql(\"Alerta\");\r",
+									"    pm.expect(jsonData[0].fecha_creacion).to.eql(\"2024-02-11T12:22:56.000Z\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fecha\": \"2024-01-31\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/medicion",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"medicion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "guardar medicion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Codigo de estado 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Respuesta en el body donde se obtienen los parametros\", function() {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"message\", \"Medición creada correctamente\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar la respuesta\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.medicion.idTipoMedicion).to.eql(3);\r",
+									"    pm.expect(jsonData.medicion.idDispositivoIoT).to.eql(1);\r",
+									"    pm.expect(jsonData.medicion.valorMedicion).to.eql(23.2);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idTipoMedicion\": 3,\r\n    \"idDispositivoIoT\": 1,\r\n    \"valorMedicion\": 23.2,\r\n    \"estado\": \"Normal\",\r\n    \"fecha_creacion\": \"2024-02-16T12:22:56.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/medicion",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"medicion"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DispositivoIoT",
+			"item": [
+				{
+					"name": "dispositivoIoT por devEUI",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Responder con las características de la consulta\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"idDispositivoIoT\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"idContenedor\", 5);\r",
+									"    pm.response.to.have.jsonBody(\"idGateway\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"idSucursal\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"modelo\", \"EM300-TH-915M\");\r",
+									"    pm.response.to.have.jsonBody(\"devEUI\", \"24e124136c372819\");\r",
+									"    pm.response.to.have.jsonBody(\"numeroSerie\", \"6136c37281991004\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/dispositivoIoT/devEUI/24e124136c372819",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"dispositivoIoT",
+								"devEUI",
+								"24e124136c372819"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contendor",
+			"item": [
+				{
+					"name": "contendor por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"idContenedor\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"idSucursal\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"idTipoContenedor\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"codigo\", \"A1\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/contenedor/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"contenedor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contendores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar la respuesta\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0].idContenedor).to.eql(1);\r",
+									"    pm.expect(jsonData[0].idSucursal).to.eql(1);\r",
+									"    pm.expect(jsonData[0].idTipoContenedor).to.eql(1);\r",
+									"    pm.expect(jsonData[0].codigo).to.eql(\"A1\");\r",
+									"    pm.expect(jsonData[0].tipoContenedor.tipo).to.eql(\"Refrigerador\");\r",
+									"    pm.expect(jsonData[0].umbral.valor_maximo).to.eql(60);\r",
+									"    pm.expect(jsonData[0].umbral.valor_minimo).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/contenedor",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"contenedor"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Umbral",
+			"item": [
+				{
+					"name": "umbral",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"idUmbral\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"idTipoMedicion\", 3);\r",
+									"    pm.response.to.have.jsonBody(\"idSucursal\", 1);\r",
+									"    pm.response.to.have.jsonBody(\"valor_maximo\", 60);\r",
+									"    pm.response.to.have.jsonBody(\"valor_minimo\", 2);\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4MTIzMTQzfQ.FgsWmYmcpeG6B8omIuMLl4AzpaswXm5GIu6Ps3CNL18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/umbral/tipoMedicion/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"umbral",
+								"tipoMedicion",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respuesta en el body donde se obtienen los parametros\", function() {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"mensaje\", \"Usuario autenticado correctamente.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar la respuesta\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.usuario.username).to.eql(\"Asistanet\");\r",
+							"    pm.expect(jsonData.usuario.idSucursal).to.eql(1)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Asistanet\",\r\n    \"password\": \"asistanet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
